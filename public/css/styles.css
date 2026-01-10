@@ -149,6 +149,10 @@ body {
   max-width: 100px;
 }
 
+.upgrade-item a {
+  color: white;
+}
+
 .reviews ul {
   padding-left: 20px;
 }
