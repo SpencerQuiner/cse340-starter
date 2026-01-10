@@ -56,7 +56,7 @@ body {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  border: 5px solid #00aaff;
+  border: 5px solid #00699E;
 }
 
 .home {
@@ -94,7 +94,7 @@ body {
 
 .hero-overlay h2 {
   margin-top: 0;
-  color: #00aaff;
+  color: #00699E;
 }
 
 .hero-overlay ul {
@@ -105,14 +105,14 @@ body {
 
 .hero-overlay li {
   font-size: 1.5rem;
-  color: #00aaff;
+  color: #00699E;
   margin: 5px 0;
 }
 
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  background: #00aaff;
+  background: #00699E;
   color: #000;
   text-decoration: none;
   border-radius: 5px;
