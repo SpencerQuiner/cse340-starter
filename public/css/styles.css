@@ -43,6 +43,58 @@ nav li:hover {
   background: #333;
 }
 
+nav a {
+  color: white;
+}
+
+nav a:hover {
+  color: yellow;
+}
+
+.inv-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.inv-detail-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8x;
+  border: solid 3px black;
+}
+
+.inv-detail-info h2 {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.inv-detail-info p {
+  font-size: 1.25rem;
+}
+
+.inv-title {
+  background-color: #fff;
+  padding: 10px;
+ }
+.inv-price {
+  background-color: #99CAE8;
+  padding: 10px;
+}
+.inv-mileage {
+  background-color: #fff;
+  padding: 10px;
+}
+.inv-color {
+  background-color: #99CAE8;
+  padding: 10px;
+}
+.inv-description {
+  background-color: #fff;
+  padding: 10px;
+}
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, Sans-serif;
@@ -225,5 +277,9 @@ body {
     border-radius: 0;
     padding: 20px;
     margin: 0;
+  }
+
+  .inv-detail {
+    grid-template-columns: 1fr;
   }
 }

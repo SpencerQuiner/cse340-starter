@@ -28,12 +28,12 @@ Util.buildByClassificationGrid = async function(data) {
         grid = '<ul id="inv-display">'
         data.forEach(vehicle => {
             grid += '<li>'
-            grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model + 'details"><img src="' + vehicle.inv_thumbnail
+            grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model + 'details"><img src="' + vehicle.inv_thumbnail
             +'"alt="Image of '+ vehicle.inv_make + ' '+vehicle.inv_model +'on CSE Motors" /></a>'
             grid += '<div class="namePrice">'
             grid += '<hr />'
             grid += '<h2>'
-            grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' + vehicle.inv_make * ' '+ vehicle.inv_model + ' details">'
+            grid += '<a href="/inv/detail/' + vehicle.inv_id +'" title="View ' + vehicle.inv_make * ' '+ vehicle.inv_model + ' details">'
             + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
             grid += '</h2>'
             grid += '<span>$'
@@ -46,6 +46,43 @@ Util.buildByClassificationGrid = async function(data) {
         grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return grid
+}
+
+/* ************************
+* Build inventory detail view HTML
+************************ */
+Util.buildInventoryDetail = function(vehicle) {
+    let detail = `
+    <section class="inv-detail">
+        <div class="inv-detail-image">
+            <img src="${vehicle.inv_image}"
+                alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors"></img>
+        </div>
+
+        <div class="inv-detail-info">
+            <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+            <p class="inv-price">
+                <strong>Price:</strong>
+                $${new Intl.NumberFormat("en-US").format(vehicle.inv_price)}
+            </p>
+
+            <p class="inv-mileage">
+                <strong>Mileage:</strong>
+                ${new Intl.NumberFormat("en-US").format(vehicle.inv_miles)} miles
+            </p>
+
+            <p class="inv-color">
+                <strong>Color:</strong> ${vehicle.inv_color}
+            </p>
+
+            <p class="inv-description">
+                <strong>Description:</strong><br>
+                ${vehicle.inv_description}
+            </p>
+        </div>
+    </section>
+    `
+    return detail
 }
 
 /* *************************
