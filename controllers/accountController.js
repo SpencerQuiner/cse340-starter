@@ -9,6 +9,7 @@ async function buildLogin(req, res, next) {
     res.render("account/login", {
         title: "Login",
         nav,
+        errors: null
     })
 }
 
@@ -46,12 +47,14 @@ async function registerAccount(req, res) {
     res.status(201).render("account/login", {
       title: "Login",
       nav,
+      errors: null
     })
   } else {
     req.flash("notice", "Sorry, the registration failed.")
     res.status(501).render("account/registration", {
       title: "Registration",
       nav,
+      errors: null
     })
   }
 }

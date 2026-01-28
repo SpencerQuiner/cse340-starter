@@ -2,8 +2,12 @@
     <h1><%= title %></h1>
     <%- messages() %>
     <% if (errors) { %>
-        <!-- display errors-->
-    <% } %>
+        <ul class="notice">
+        <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+        <%  }) %>
+        </ul>
+        <% } %>
 
     <form action="/account/registration" method="post" class="registration-form">
         <div class="form-group">
@@ -43,6 +47,7 @@
                 name="account_password"
                 id="account_password"
                 required
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
                 >
         </div>
         <div class="pass-requirements">
