@@ -1,14 +1,20 @@
 <div class="account-form">
     <h1><%= title %></h1>
-    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+        </ul>
+    <% } %>
 
-    <form action="/account/login" method="post" class="login-form">
+    <form id="loginForm" action="/account/login" method="post" class="login-form">
         <div class="form-group">
             <label for="email">Email Address</label>
             <input 
                 type="email"
-                name="email"
-                id="email"
+                name="account_email"
+                id="account_email"
                 required
                 >
         </div>
@@ -17,10 +23,14 @@
             <label for="password">Password</label>
             <input 
                 type="password"
-                name="password"
-                id="password"
+                name="account_password"
+                id="account_password"
                 required
                 >
+                <div class="show-password-container">
+                    <input type="checkbox" id="showPassword">
+                    <label for="showPassword">Show Password</label>
+                </div>
         </div>
 
         <div class="form-actions">
@@ -32,3 +42,15 @@
         <a href="/account/registration">No Account? Sign-up</a>
     </div>
 </div>
+<script>
+  const showPasswordCheckbox = document.getElementById('showPassword')
+  const passwordInput = document.getElementById('account_password')
+
+  showPasswordCheckbox.addEventListener('change', () => {
+    if (showPasswordCheckbox.checked) {
+      passwordInput.type = 'text'
+    } else {
+      passwordInput.type = 'password'
+    }
+  })
+</script>

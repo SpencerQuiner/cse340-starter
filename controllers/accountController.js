@@ -1,5 +1,6 @@
 const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
+const bcrypt = require("bcryptjs")
 
 /* *****************
 * Deliver Login view
@@ -11,6 +12,44 @@ async function buildLogin(req, res, next) {
         nav,
         errors: null
     })
+}
+
+/* ****************************************
+*  Process Login
+* *************************************** */
+async function accountLogin(req, res) {
+  let nav = await utilities.getNav()
+  const { account_email, account_password } = req.body
+
+  const accountData = await accountModel.getAccountByEmail(account_email)
+
+  if (!accountData) {
+    req.flash("notice", "Invalid email or password.")
+    return res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    })
+  }
+
+  const passwordMatch = await bcrypt.compare(
+    account_password,
+    accountData.account_password
+  )
+
+  if (passwordMatch) {
+    req.flash("notice", "You are logged in.")
+    return res.redirect("/")
+  } else {
+    req.flash("notice", "Invalid email or password.")
+    return res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    })
+  }
 }
 
 /* **************************
@@ -32,11 +71,25 @@ async function registerAccount(req, res) {
   let nav = await utilities.getNav()
   const { account_firstname, account_lastname, account_email, account_password } = req.body
 
+  // Hash the password before storing
+  let hashedPassword
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hash(account_password, 10)
+  } catch (error) {
+    req.flash("notice", 'Sorry, there was an error processing the registration.')
+    return res.status(500).render("account/registration", {
+      title: "Registration",
+      nav,
+      errors: null,
+    })
+  }
+
   const regResult = await accountModel.registerAccount(
     account_firstname,
     account_lastname,
     account_email,
-    account_password
+    hashedPassword
   )
 
   if (regResult) {
@@ -60,4 +113,4 @@ async function registerAccount(req, res) {
 }
 
 
-module.exports = {buildLogin, buildRegister, registerAccount}
+module.exports = {buildLogin, buildRegister, registerAccount, accountLogin}

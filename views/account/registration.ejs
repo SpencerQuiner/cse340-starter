@@ -17,6 +17,7 @@
                 name="account_firstname"
                 id="account_firstname"
                 required
+                value="<%= locals.account_firstname %>"
                 >
         </div>
 
@@ -27,6 +28,7 @@
                 name="account_lastname"
                 id="account_lastname"
                 required
+                value="<%= locals.account_lastname %>"
                 >
         </div>
 
@@ -37,6 +39,7 @@
                 name="account_email"
                 id="account_email"
                 required
+                value="<%= locals.account_email %>"
                 >
         </div>
 
@@ -49,6 +52,10 @@
                 required
                 pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
                 >
+                <div class="show-password-container">
+                    <input type="checkbox" id="showPassword">
+                    <label for="showPassword">Show Password</label>
+                </div>
         </div>
         <div class="pass-requirements">
             <span>Passwords must be 12 characters in length and contain at least 1 capital letter, number, and special character.</span>
@@ -60,3 +67,15 @@
     </form>
 
 </div>
+<script>
+  const showPasswordCheckbox = document.getElementById('showPassword')
+  const passwordInput = document.getElementById('account_password')
+
+  showPasswordCheckbox.addEventListener('change', () => {
+    if (showPasswordCheckbox.checked) {
+      passwordInput.type = 'text'
+    } else {
+      passwordInput.type = 'password'
+    }
+  })
+</script>
