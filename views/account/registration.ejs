@@ -1,0 +1,57 @@
+<div class="account-form">
+    <h1><%= title %></h1>
+    <%- messages() %>
+    <% if (errors) { %>
+        <!-- display errors-->
+    <% } %>
+
+    <form action="/account/registration" method="post" class="registration-form">
+        <div class="form-group">
+            <label for="account_firstname">First Name</label>
+            <input 
+                type="text"
+                name="account_firstname"
+                id="account_firstname"
+                required
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="account_lastname">Last Name</label>
+            <input 
+                type="text"
+                name="account_lastname"
+                id="account_lastname"
+                required
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="account_email">Email</label>
+            <input 
+                type="email"
+                name="account_email"
+                id="account_email"
+                required
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="account_password">Password</label>
+            <input 
+                type="password"
+                name="account_password"
+                id="account_password"
+                required
+                >
+        </div>
+        <div class="pass-requirements">
+            <span>Passwords must be 12 characters in length and contain at least 1 capital letter, number, and special character.</span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit">Register</button>
+        </div>
+    </form>
+
+</div>

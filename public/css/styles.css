@@ -1,3 +1,8 @@
+/* Make all elements include padding/border in width */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 #top-header {
   display: flex;
   justify-content: space-between;
@@ -100,6 +105,7 @@ body {
   font-family: Arial, Helvetica, Sans-serif;
   background-image: url("/images/site/checkerboard.jpg");
   background-repeat: repeat;
+  min-width: 320px;
 }
 
 #wrapper {
@@ -178,7 +184,7 @@ body {
   gap: 40px;
   margin-top: 40px;
 }
-
+/*available upgrades section*/
 .upgrade-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -206,6 +212,7 @@ body {
   color: white;
 }
 
+/*reveiws section*/
 .reviews ul {
   padding-left: 20px;
 }
@@ -213,6 +220,113 @@ body {
 .reviews li {
   font-size: 1.7rem;
   margin-bottom: 20px;
+}
+
+.notice {
+  color:#fff;
+  list-style: none;
+}
+
+/* Account Login and Registration Pages*/
+
+/* Center account pages inside wrapper */
+main:has(.account-form) {
+  display: flex;
+  justify-content: center;
+}
+
+.account-form {
+  width: 100%;
+  max-width: 500px;
+  background-color: #00699E;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 3px solid #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 1rem;
+}
+
+/* Title */
+.account-form h1 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+/* Flash Message */
+.account-form .messages {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+/* Login Form */
+.login-form, .registration-form {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  /*align-items: center;*/
+}
+
+/* Form Groups */
+.form-group {
+  width: 100%;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column; 
+  /*align-items: center;*/
+}
+
+/* Labels */
+.form-group label {
+  margin-bottom: 0.25rem;
+  color: white;
+  text-align: left;
+}
+
+/* Inputs */
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Button */
+.form-actions {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.form-actions button {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: white;
+  color: #00699E;
+  border: none;
+  border-radius: 4px;
+
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Registration link */
+.registration-request {
+  margin-top: 1rem;
+}
+
+.registration-request a {
+  color: white;
+  text-decoration: underline;
+}
+
+.pass-requirements {
+  color:#fff;
 }
 
 @media (max-width: 768px) {
@@ -281,5 +395,15 @@ body {
 
   .inv-detail {
     grid-template-columns: 1fr;
+  }
+
+  .account-login {
+    width: 90%;
+    max-width: none;
+    padding: 2rem;
+  }
+  
+  .login-form {
+    max-width: 100%;
   }
 }
