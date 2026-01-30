@@ -1,0 +1,29 @@
+<div class="management-form form-centered">
+    <h1><%= title %></h1>
+    <% if (errors) { %>
+        <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+        </ul>
+    <% } %>
+
+    <form id="addClassification" action="/inv/add-classification" method="post" class="addClassification">
+        <div class="form-group">
+            <p class="form-instructions">Classification name must not contain spaces or special characters.</p>
+            <label for="classification_name">New Classification</label>
+            <input 
+                type="text"
+                name="classification_name"
+                id="classification_name"
+                required
+                pattern="^[A-Za-z0-9]+$"
+                title="Only letters and numbers are allowed. No spaces or special characters."
+                >
+        </div>
+
+        <div class="form-actions">
+            <button type="submit">Create Classification</button>
+        </div>
+    </form>
+</div>

@@ -223,8 +223,10 @@ body {
 }
 
 .notice {
-  color:#fff;
-  list-style: none;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 /* Account Login and Registration Pages*/
@@ -329,6 +331,82 @@ main:has(.account-form) {
   color:#fff;
 }
 
+.management-form {
+    background-color: #00699E; /* blue background */
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 2rem auto; /* center horizontally with spacing from top/bottom */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #ffffff; /* default text color */
+    text-align: center;
+}
+
+/* Title */
+.management-form h1 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* Messages / errors styling */
+.management-form .notice {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    list-style-type: none;
+}
+
+/* Buttons Container Using Grid */
+.management-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem; /* space between buttons */
+    justify-items: center; /* center items in each column */
+}
+
+/* Each Link as a Card */
+.management-buttons .management-Link a {
+    display: block;
+    background-color: #f5f5f5; /* pearl-grey */
+    border: 2px solid white;
+    color: #00699E;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+    min-width: 180px; /* ensures button is readable */
+}
+
+/* Hover Effect */
+.management-buttons .management-Link a:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.management-form select,
+.management-form #classificationList {
+    width: 100%; /* full width like other inputs */
+    padding: 0.5rem 0.75rem; /* match input padding */
+    font-size: 1rem;
+    border: 1px solid #ccc; /* subtle border */
+    border-radius: 5px; /* rounded corners like inputs */
+    background-color: #ffffff; /* white background to match inputs */
+    color: #333; /* dark text */
+    box-sizing: border-box; /* ensures padding doesn’t break width */
+}
+
+/* Hover & focus effect */
+.management-form select:focus {
+    border-color: #00699E;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 105, 158, 0.5);
+}
+
 @media (max-width: 768px) {
   body {
     background: #fff;
@@ -406,4 +484,8 @@ main:has(.account-form) {
   .login-form {
     max-width: 100%;
   }
+
+  .management-buttons {
+        grid-template-columns: 1fr; /* stack buttons on very small screens */
+    }
 }

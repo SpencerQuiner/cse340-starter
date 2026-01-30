@@ -1,0 +1,20 @@
+<div class="management-form management-home">
+    <h1><%= title %></h1>
+    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+        <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+        <%  }) %>
+        </ul>
+        <% } %>
+    <div class="management-buttons">
+        <div class="management-Link">
+            <a href="/inv/add-classification">Add Classification</a>
+        </div>
+
+        <div class="management-Link">
+            <a href="/inv/add-inventory">Add Inventory Item</a>
+        </div>
+    </div>
+</div>
