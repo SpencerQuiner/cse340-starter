@@ -24,4 +24,8 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
+// Default route for account management view
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement)
+)
+
 module.exports = router;

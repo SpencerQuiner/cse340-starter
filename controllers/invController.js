@@ -51,10 +51,12 @@ invCont.buildInventoryDetail = async function (req, res, next) {
 * ***************************** */
 invCont.buildManagementView = async function (req, res, next) {
     let nav = await utilities.getNav()
+    const classificationList = await utilities.buildClassificationList()
     res.render("inventory/management", {
         title: "Inventory Management Center",
         nav,
-        errors: null
+        errors: null,
+        classificationList
     })  
 }
 
@@ -196,6 +198,20 @@ invCont.addInventory = async function (req, res) {
         inv_color,
         classification_id
     })
+  }
+}
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async function (req, res, next) {
+  const classification_id = req.params.classification_id
+  try {
+    const inventoryData = await invModel.getInventoryByClassificationId(classification_id)
+    res.json(inventoryData)
+  } catch (error) {
+    console.error("getInventoryJSON error:", error)
+    res.status(500).json({ error: "Unable to retrieve inventory data" })
   }
 }
 
