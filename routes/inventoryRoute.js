@@ -14,7 +14,7 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 //Route to build inventory detail view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildInventoryDetail))
 
-router.get("/",utilities.handleErrors(invController.buildManagementView))
+router.get("/", utilities.handleErrors(invController.buildManagementView))
 
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification))
 
@@ -30,4 +30,14 @@ router.post("/add-inventory", invValidate.inventoryRules(),
     utilities.handleErrors(invController.addInventory)
 )
 
-module.exports = router;
+//route to build update detail view
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
+router.post("/edit", invValidate.inventoryRules(), 
+    invValidate.checkInventoryData, 
+    utilities.handleErrors(invController.updateInventory))
+
+//route to build delete inventory item view
+router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteItemView))
+router.post("/delete", utilities.handleErrors(invController.deleteItem))
+
+module.exports = router; 
