@@ -130,7 +130,78 @@ async function buildAccountManagement(req, res, next) {
     })
 }
 
+/* **************************
+* Deliver account update view
+* ************************ */
+async function buildAccountUpdate(req, res, next) {
+    let nav = await utilities.getNav()
+    const accountData = res.locals.accountData
+
+    res.render("account/update", {
+    title: "Update Account Information",
+    nav,
+    errors: null,
+    account_id: accountData.account_id,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email
+    })
+}
+
+/* **************************
+* process Account update
+* ************************ */
+async function updateAccount(req, res) {
+  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+    if (account_id != res.locals.accountData.account_id) {
+    req.flash("notice", "Unauthorized action.")
+    return res.redirect("/account/")
+  }
+
+  try {
+    const result = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
+
+    req.flash("notice", "Account information updated successfully.");
+    res.redirect("/account/"); // back to account management view
+  } catch (error) {
+    console.error(error);
+    req.flash("notice", "Unable to update account. Please try again.");
+    res.redirect("/account/");
+  }
+}  
+/* **************************
+* <process change password>
+* ************************ */
 
 
+async function updatePassword(req, res) {
+  const { account_id, account_password } = req.body;
+    if (account_id != res.locals.accountData.account_id) {
+    req.flash("notice", "Unauthorized action.")
+    return res.redirect("/account/")
+  }
 
-module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement}
+  try {
+    const hashedPassword = await bcrypt.hash(account_password, 10);
+    const result = await accountModel.updatePassword(account_id, hashedPassword);
+
+    req.flash("notice", "Password updated successfully.");
+    res.redirect("/account/");
+  } catch (error) {
+    console.error(error);
+    req.flash("notice", "Unable to update password. Please try again.");
+    res.redirect("/account/");
+  }
+}
+
+/* *****************************
+* logout function
+* ***************************** */
+function accountLogout(req, res) {
+  res.clearCookie("jwt")
+  res.redirect("/")
+}
+
+module.exports = {buildLogin, buildRegister, 
+  registerAccount, accountLogin, buildAccountManagement, 
+  buildAccountUpdate, updateAccount, updatePassword, accountLogout}

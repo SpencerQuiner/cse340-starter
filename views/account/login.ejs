@@ -42,15 +42,3 @@
         <a href="/account/registration">No Account? Sign-up</a>
     </div>
 </div>
-<script>
-  const showPasswordCheckbox = document.getElementById('showPassword')
-  const passwordInput = document.getElementById('account_password')
-
-  showPasswordCheckbox.addEventListener('change', () => {
-    if (showPasswordCheckbox.checked) {
-      passwordInput.type = 'text'
-    } else {
-      passwordInput.type = 'password'
-    }
-  })
-</script>

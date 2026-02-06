@@ -17,10 +17,37 @@
   color: #000;
 }
 
+#tools ul {
+  list-style: none;
+}
+
+#tools li {
+  display: inline-block;
+  margin-right: 1rem;
+}
 #tools a {
   text-decoration: none;
   color: #000;
   font-size: 1rem;
+  font-weight: bold;
+}
+
+#tools a:hover {
+  color: #cc0000;
+}
+
+#management h2, h3 {
+  color: #fff;
+  text-decoration: underline;
+}
+
+#management p a {
+  text-decoration: none;
+  color: #00699E;
+  padding: 5px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  border: #000 solid 2px;
 }
 
 nav {
@@ -248,7 +275,7 @@ main:has(.account-form) {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin: 0 1rem;
+  margin: 1rem 1rem;
 }
 
 /* Title */
@@ -406,6 +433,7 @@ main:has(.account-form) {
     outline: none;
     box-shadow: 0 0 3px rgba(0, 105, 158, 0.5);
 }
+
 
 @media (max-width: 768px) {
   body {

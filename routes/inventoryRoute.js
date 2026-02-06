@@ -14,30 +14,33 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 //Route to build inventory detail view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildInventoryDetail))
 
-router.get("/", utilities.handleErrors(invController.buildManagementView))
+// Route to build Inventory management view
+router.get("/", utilities.checkAccountType, utilities.handleErrors(invController.buildManagementView))
 
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification))
+//add new classification
+router.get("/add-classification", utilities.checkAccountType, utilities.handleErrors(invController.buildAddClassification))
 
-router.post("/add-classification", invValidate.classificationRules(), 
+router.post("/add-classification", utilities.checkAccountType, invValidate.classificationRules(), 
     invValidate.checkClassificationData,
     utilities.handleErrors(invController.addClassification)
 )
+// add new inventory item
+router.get("/add-inventory", utilities.checkAccountType, utilities.handleErrors(invController.buildAddInventory))
 
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory))
-
-router.post("/add-inventory", invValidate.inventoryRules(),
+router.post("/add-inventory", utilities.checkAccountType, invValidate.inventoryRules(),
     invValidate.checkInventoryData,
     utilities.handleErrors(invController.addInventory)
 )
 
 //route to build update detail view
-router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
-router.post("/edit", invValidate.inventoryRules(), 
+router.get("/edit/:inv_id", utilities.checkAccountType, utilities.handleErrors(invController.editInventoryView))
+
+router.post("/edit", utilities.checkAccountType, invValidate.inventoryRules(), 
     invValidate.checkInventoryData, 
     utilities.handleErrors(invController.updateInventory))
 
 //route to build delete inventory item view
-router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteItemView))
-router.post("/delete", utilities.handleErrors(invController.deleteItem))
+router.get("/delete/:inv_id", utilities.checkAccountType, utilities.handleErrors(invController.deleteItemView))
+router.post("/delete", utilities.checkAccountType, utilities.handleErrors(invController.deleteItem))
 
 module.exports = router; 

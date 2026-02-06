@@ -11,7 +11,6 @@ Util.getNav = async function (req, res, next) {
     let list = "<ul>"
     //console.log(data)
     list += '<li><a href="/" title="Home page">Home</a></li>'
-    list += '<li><a href="/inv" title="Inventory Management">Admin</a></li>'
     data.rows.forEach((row) => {
         list += "<li>"
         list +=
@@ -120,23 +119,26 @@ Util.buildClassificationList = async function (classification_id = null) {
 * Middleware to check token validity
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
- if (req.cookies.jwt) {
-  jwt.verify(
-   req.cookies.jwt,
-   process.env.ACCESS_TOKEN_SECRET,
-   function (err, accountData) {
-    if (err) {
-     req.flash("Please log in")
-     res.clearCookie("jwt")
-     return res.redirect("/account/login")
+    res.locals.loggedin = false
+
+    if (req.cookies.jwt) {
+    jwt.verify(
+    req.cookies.jwt,
+    process.env.ACCESS_TOKEN_SECRET,
+    function (err, accountData) {
+        if (err) {
+        req.flash("notice","Please log in")
+        res.clearCookie("jwt")
+        return res.redirect("/account/login")
+        }
+        res.locals.accountData = accountData
+        res.locals.loggedin = true
+        next()
+        }
+      )
+    } else {
+        next()
     }
-    res.locals.accountData = accountData
-    res.locals.loggedin = 1
-    next()
-   })
- } else {
-  next()
- }
 }
 
 /* ****************************************
@@ -150,5 +152,20 @@ Util.checkJWTToken = (req, res, next) => {
     return res.redirect("/account/login")
   }
  }
+
+ /* **************************************
+ * Check Account Type
+ ************************************* */
+Util.checkAccountType =(req, res, next) => {
+    if(
+        res.locals.loggedin &&
+        (res.locals.accountData.account_type === "Employee" ||
+            res.locals.accountData.account_type === "Admin")
+        ) {
+            return next()
+        }
+        req.flash("notice", "you must be logged in as an employee or administrator to access that page.")
+        return res.redirect("/account/login")
+}
 
 module.exports = Util
