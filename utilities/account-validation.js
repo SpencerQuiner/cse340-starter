@@ -134,7 +134,7 @@ validate.updateAccountRules = () => {
     .notEmpty()
     .withMessage("Please provide a last name"),
 
-    body("accout_email")
+    body("account_email")
     .trim()
     .normalizeEmail()
     .isEmail()
@@ -164,12 +164,10 @@ validate.checkAccountData = async (req, res, next) => {
       title: "Update Account Information",
       nav,
       errors,
-      accountData: {
-        account_id,
-        account_firstname,
-        account_lastname,
-        account_email,
-      },
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email,
     })
     return
   }

@@ -43,4 +43,8 @@ router.post("/edit", utilities.checkAccountType, invValidate.inventoryRules(),
 router.get("/delete/:inv_id", utilities.checkAccountType, utilities.handleErrors(invController.deleteItemView))
 router.post("/delete", utilities.checkAccountType, utilities.handleErrors(invController.deleteItem))
 
+//route to build inventory search view
+router.get("/search/", utilities.handleErrors(invController.buildSearchView))
+router.post("/search/", invValidate.searchValidateRules(),invValidate.validateSearch, utilities.handleErrors(invController.searchInventory))
+
 module.exports = router; 

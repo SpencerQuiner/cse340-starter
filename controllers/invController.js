@@ -99,7 +99,7 @@ invCont.addClassification = async function (req, res) {
 *********************** */
 invCont.buildAddInventory = async function (req, res) {
     let nav = await utilities.getNav()
-    let classificationList = await utilities.buildClassificationList()
+    let classificationList = await utilities.buildClassificationList(null, true)
 
     res.render("inventory/add-inventory", {
     title: "Add Inventory Item",
@@ -142,7 +142,7 @@ invCont.addInventory = async function (req, res) {
   const errors = validationResult(req) // assuming express-validator
   if (!errors.isEmpty()) {
     // Re-render form with sticky values
-    let classificationList = await utilities.buildClassificationList(classification_id)
+    let classificationList = await utilities.buildClassificationList(classification_id, true)
     return res.status(400).render("inventory/add-inventory", {
       title: "Add Inventory Item",
       nav,
@@ -179,7 +179,7 @@ invCont.addInventory = async function (req, res) {
     res.redirect("/inv/")
   } else {
     req.flash("notice", "Failed to add inventory item.")
-    let classificationList = await utilities.buildClassificationList(classification_id)
+    let classificationList = await utilities.buildClassificationList(classification_id, true)
 
     res.status(500).render("inventory/add-inventory", {
       title: "Add Inventory Item",
@@ -228,7 +228,7 @@ invCont.editInventoryView = async function (req, res) {
         if (!inventory) {
           throw new Error("Inventory item not found")
         }
-    let classificationList = await utilities.buildClassificationList(inventory.classification_id)
+    let classificationList = await utilities.buildClassificationList(inventory.classification_id, true)
     const itemName = `${inventory.inv_make} ${inventory.inv_model}`
 
     res.render("inventory/edit", {
@@ -280,7 +280,7 @@ invCont.updateInventory = async function (req, res) {
         res.redirect("/inv/");
     } else {
         req.flash("notice", "Failed to update inventory item.");
-        let classificationList = await utilities.buildClassificationList(classification_id);
+        let classificationList = await utilities.buildClassificationList(classification_id, true);
 
         return res.status(500).render("inventory/edit", {
             title: "Edit Inventory Item",
@@ -358,6 +358,66 @@ invCont.deleteItem = async function (req, res) {
             inv_price: inventory.inv_price
         })
     }
+}
+
+/* **********************
+* Build inventory Search View
+*********************** */
+invCont.buildSearchView = async function (req, res) {
+    let nav = await utilities.getNav()
+    let classificationList = await utilities.buildClassificationList()
+
+    res.render("inventory/search", {
+    title: "Search Vehicle Inventory",
+    nav,
+    classificationList,
+    errors: null,
+    inv_make: "",
+    inv_model: "",
+    min_year: "",
+    max_year: "",
+    min_price: "",
+    max_price: "",
+    min_miles: "",
+    max_miles: "",
+    inv_color: "",
+    classification_id: ""
+  })
+}
+
+
+/* **********************
+* Process inventory search
+*********************** */
+invCont.searchInventory = async function (req, res, next) {
+  try{
+    const filters = req.body
+    const results = await invModel.searchInventory(filters)
+    let nav = await utilities.getNav()
+
+    if (results.length === 0) {
+    const classificationList = await utilities.buildClassificationList(filters.classification_id)
+    
+    return res.render("inventory/search", {
+        title: "Search Vehicle Inventory",
+        nav,
+        classificationList,
+        errors: [{ msg: "No matches found" }],
+        ... filters
+    })
+  }
+    const grid = await utilities.buildByClassificationGrid(results)    
+    
+    res.render("./inventory/search-results", {
+        title: "Search Results",
+        nav,
+        grid,
+    })
+
+} catch (error) {
+  console.error("searchInventory error:", error)
+  next(error)
+}
 }
 
 

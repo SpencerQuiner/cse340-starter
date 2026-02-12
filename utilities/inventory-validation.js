@@ -123,4 +123,73 @@ validate.checkInventoryData = async (req, res, next) => {
   next()
 }
 
+/* ***********************
+*Search Validation Rules
+********************** */
+
+
+validate.searchValidateRules= () => {
+  return [
+    body("min_price")
+      .optional({ checkFalsy: true })
+      .isNumeric()
+      .withMessage("Minimum price must be a number"),
+
+    body("max_price")
+      .optional({ checkFalsy: true })
+      .isNumeric()
+      .withMessage("Maximum price must be a number")
+      .custom((value, { req }) => {
+        if (req.body.min_price && value) {
+          if (Number(value) < Number(req.body.min_price)) {
+            throw new Error("Maximum price must be greater than minimum price")
+          }
+        }
+        return true
+      }),
+
+    body("min_miles")
+      .optional({ checkFalsy: true })
+      .isNumeric()
+      .withMessage("Minimum miles must be a number"),
+
+   body("max_miles")
+      .optional({ checkFalsy: true })
+      .isNumeric()
+      .withMessage("Maximum miles must be a number")
+      .custom((value, { req }) => {
+        if (req.body.min_miles && value) {
+          if (Number(value) < Number(req.body.min_miles)) {
+            throw new Error("Maximum miles must be greater than minimum miles")
+          }
+        }
+        return true
+      }),
+  ]
+}
+
+/* ***********************
+*Validate Search
+********************** */
+validate.validateSearch = async (req, res, next) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    const utilities = require("../utilities")
+    const nav = await utilities.getNav()
+    const classificationList =
+      await utilities.buildClassificationList(req.body.classification_id)
+
+    return res.status(400).render("inventory/search", {
+      title: "Search Vehicle Inventory",
+      nav,
+      classificationList,
+      errors,
+      ...req.body // keeps sticky values
+    })
+  }
+
+  next()
+}
+
 module.exports = validate

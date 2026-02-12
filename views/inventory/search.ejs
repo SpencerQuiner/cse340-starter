@@ -1,0 +1,123 @@
+<div class="management-form form-centered">
+    <h1><%= title %></h1>
+    <% if (errors) { %>
+        <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+        </ul>
+    <% } %>
+
+    <form id="searchInventory" action="/inv/search" method="post" class="searchInventory">
+        <div class="form-group">
+            <label for="inv_make">Make</label>
+            <input 
+                type="text"
+                name="inv_make"
+                id="inv_make"
+                value="<%= filters?.inv_make ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="inv_model">Model</label>
+            <input 
+                type="text"
+                name="inv_model"
+                id="inv_model"
+                value="<%= filters?.inv_model ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="min_year">Minimum Year</label>
+            <input 
+                type="number"
+                name="min_year"
+                id="min_year"
+                min="1900" 
+                max="2030"
+                value="<%= filters?.min_year ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="max_year">Maximum Year</label>
+            <input 
+                type="number"
+                name="max_year"
+                id="max_year"
+                min="1900" 
+                max="2030"
+                value="<%= filters?.max_year ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="min_price">Minimum Price</label>
+            <input 
+                type="number"
+                name="min_price"
+                id="min_price"
+                step="1000" 
+                min="0"
+                value="<%= filters?.min_price ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="max_price">Maximum Price</label>
+            <input 
+                type="number"
+                name="max_price"
+                id="max_price"
+                step="1000" 
+                min="0"
+                value="<%= filters?.max_price ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="min_miles">Minimum Miles</label>
+            <input 
+                type="number"
+                name="min_miles"
+                id="min_miles"
+                min="0"
+                step="1000"
+                value="<%= filters?.min_miles ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="max_miles">Maximum Miles</label>
+            <input 
+                type="number"
+                name="max_miles"
+                id="max_miles"
+                min="0"
+                step="1000"
+                value="<%= filters?.max_miles ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="inv_color">Color</label>
+            <input 
+                type="text"
+                name="inv_color"
+                id="inv_color"
+                value="<%= filters?.inv_color ?? '' %>"
+                >
+        </div>
+
+        <div class="form-group">
+            <label for="classificationList">Classification</label>
+            <%- classificationList %>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" >Find Vehicles</button>
+        </div>
+    </form>
+</div>
