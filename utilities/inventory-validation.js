@@ -127,22 +127,23 @@ validate.checkInventoryData = async (req, res, next) => {
 *Search Validation Rules
 ********************** */
 
-
 validate.searchValidateRules= () => {
   return [
     body("min_price")
       .optional({ checkFalsy: true })
-      .isNumeric()
+      .isFloat({ min: 0})
       .withMessage("Minimum price must be a number"),
 
     body("max_price")
       .optional({ checkFalsy: true })
-      .isNumeric()
+      .isFloat({ min: 0 })
       .withMessage("Maximum price must be a number")
       .custom((value, { req }) => {
-        if (req.body.min_price && value) {
-          if (Number(value) < Number(req.body.min_price)) {
-            throw new Error("Maximum price must be greater than minimum price")
+        const minPrice = Number(req.body.min_price?.trim())
+        const maxPrice = Number(value?.trim())
+          if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+            if (maxPrice < minPrice) {
+              throw new Error("Maximum price must be greater than minimum price")
           }
         }
         return true
@@ -150,20 +151,24 @@ validate.searchValidateRules= () => {
 
     body("min_miles")
       .optional({ checkFalsy: true })
-      .isNumeric()
+      .isInt({ min: 0 })
       .withMessage("Minimum miles must be a number"),
 
    body("max_miles")
       .optional({ checkFalsy: true })
-      .isNumeric()
+      .isInt({ min: 0 })
       .withMessage("Maximum miles must be a number")
       .custom((value, { req }) => {
-        if (req.body.min_miles && value) {
-          if (Number(value) < Number(req.body.min_miles)) {
-            throw new Error("Maximum miles must be greater than minimum miles")
+        const minMiles = Number(req.body.min_miles?.trim())
+        const maxMiles = Number(value?.trim())
+
+          // Only validate if both are numbers
+          if (!isNaN(minMiles) && !isNaN(maxMiles)) {
+            if (maxMiles < minMiles) {
+              throw new Error("Maximum miles must be greater than minimum miles")
+            }
           }
-        }
-        return true
+          return true
       }),
   ]
 }
@@ -184,8 +189,8 @@ validate.validateSearch = async (req, res, next) => {
       title: "Search Vehicle Inventory",
       nav,
       classificationList,
-      errors,
-      ...req.body // keeps sticky values
+      errors: errors.array(),
+      filters: req.body // keeps sticky values
     })
   }
 

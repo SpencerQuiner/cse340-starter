@@ -140,6 +140,113 @@ async function updateInventory(
   }
 }
 
-module.exports = {getClassifications, 
+/* ***************************
+ *  Search Inventory
+ * ************************** */
+ async function searchInventory(filters) {
+  try {
+    let baseQuery = `SELECT * FROM inventory`
+    
+    const whereClauses = []
+    const values = []
+    let index = 1
+
+    //make
+    if (filters.inv_make) {
+      whereClauses.push(`inv_make ILIKE $${index}`)
+      values.push(`%${filters.inv_make}%`)
+      index++
+    }
+
+    //model
+    if (filters.inv_model) {
+      whereClauses.push(`inv_model ILIKE $${index}`)
+      values.push(`%${filters.inv_model}%`)
+      index++
+    }
+
+    // Min Year
+    if (filters.min_year) {
+      whereClauses.push(`inv_year >= $${index}`)
+      values.push(filters.min_year)
+      index++
+    }
+
+    // Max Year
+    if (filters.max_year) {
+      whereClauses.push(`inv_year <= $${index}`)
+      values.push(filters.max_year)
+      index++
+    }
+
+    // Min Price
+    if (filters.min_price) {
+      whereClauses.push(`inv_price >= $${index}`)
+      values.push(filters.min_price)
+      index++
+    }
+
+    // Max Price
+    if (filters.max_price) {
+      whereClauses.push(`inv_price <= $${index}`)
+      values.push(filters.max_price)
+      index++
+    }
+
+    // Min Miles
+    if (filters.min_miles) {
+      whereClauses.push(`inv_miles >= $${index}`)
+      values.push(filters.min_miles)
+      index++
+    }
+
+    // Max Miles
+    if (filters.max_miles) {
+      whereClauses.push(`inv_miles <= $${index}`)
+      values.push(filters.max_miles)
+      index++
+    }
+
+    // Color
+    if (filters.inv_color) {
+      whereClauses.push(`inv_color ILIKE $${index}`)
+      values.push(`%${filters.inv_color}%`)
+      index++
+    }
+
+    // Classification
+    if (filters.classification_id) {
+      whereClauses.push(`classification_id = $${index}`)
+      values.push(filters.classification_id)
+      index++
+    }
+
+    // Combine WHERE clauses if any exist
+    if (whereClauses.length > 0) {
+      baseQuery += " WHERE " + whereClauses.join(" AND ")
+    }
+
+    // Optional ordering
+    baseQuery += " ORDER BY inv_make, inv_model"
+    //console.log("SQL",baseQuery)
+    //console.log("Values:", values)
+
+
+    const data = await pool.query({text: baseQuery, values: values})
+  return data.rows
+  } catch (error) {
+    console.error("Search Inventory Error:", error)
+    throw error
+  }
+}
+
+module.exports = {
+    getClassifications, 
     getInventoryByClassificationId,
-    getInventoryById, addClassification, addInventory, updateInventory, deleteInventoryItem};
+    getInventoryById, 
+    addClassification, 
+    addInventory, 
+    updateInventory, 
+    deleteInventoryItem, 
+    searchInventory
+  };

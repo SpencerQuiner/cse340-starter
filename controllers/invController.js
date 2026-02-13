@@ -363,26 +363,24 @@ invCont.deleteItem = async function (req, res) {
 /* **********************
 * Build inventory Search View
 *********************** */
-invCont.buildSearchView = async function (req, res) {
-    let nav = await utilities.getNav()
-    let classificationList = await utilities.buildClassificationList()
+invCont.buildSearchView = async function (req, res, next) {
+  try{
 
-    res.render("inventory/search", {
-    title: "Search Vehicle Inventory",
-    nav,
-    classificationList,
-    errors: null,
-    inv_make: "",
-    inv_model: "",
-    min_year: "",
-    max_year: "",
-    min_price: "",
-    max_price: "",
-    min_miles: "",
-    max_miles: "",
-    inv_color: "",
-    classification_id: ""
-  })
+      let nav = await utilities.getNav()
+      let classificationList = await utilities.buildClassificationList()
+      const filters = req.body || {}
+
+      res.render("inventory/search", {
+      title: "Search Vehicle Inventory",
+      nav,
+      classificationList,
+      errors: null,
+      filters
+    })
+  } catch (error){
+    console.error("buildSearchView error", error)
+    next(error)
+  }
 }
 
 
@@ -403,7 +401,7 @@ invCont.searchInventory = async function (req, res, next) {
         nav,
         classificationList,
         errors: [{ msg: "No matches found" }],
-        ... filters
+        filters
     })
   }
     const grid = await utilities.buildByClassificationGrid(results)    

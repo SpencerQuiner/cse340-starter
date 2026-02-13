@@ -25,10 +25,11 @@ Util.getNav = async function (req, res, next) {
 * Build the classification view HTML
 * ************************/
 Util.buildByClassificationGrid = async function(data) {
+    let grid = ''
     if(data.length > 0){
-        grid = '<ul id="inv-display">'
+        grid = '<div class="inventory-grid">'
         data.forEach(vehicle => {
-            grid += '<li>'
+            grid += '<div class="inventory-card">'
             grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model + 'details"><img src="' + vehicle.inv_thumbnail
             +'" alt="Image of '+ vehicle.inv_make + ' '+vehicle.inv_model +'on CSE Motors" ></a>'
             grid += '<div class="namePrice">'
@@ -40,9 +41,9 @@ Util.buildByClassificationGrid = async function(data) {
             grid += '<span>$'
             + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
             grid += '</div>'
-            grid += '</li>'
+            grid += '</div>'
         })
-        grid += '</ul>'
+        grid += '</div>'
     } else{
         grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
